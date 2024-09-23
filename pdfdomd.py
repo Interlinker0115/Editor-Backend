@@ -117,7 +117,7 @@ def pdf_to_html(input_pdf_path, driver,  file_type='md'):
             download_processed_file(pdf_id, 'md', output_mmd_path)
     
     # extract the formula from md file, convert this latex formula to mathml formula and then save this mathml file to csv file
-    # formula_handling(output_mmd_path, driver)
+    formula_handling(output_mmd_path, driver)
     
     # convert md file to html file and
     # send request for conversion of md file
