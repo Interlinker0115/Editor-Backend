@@ -91,8 +91,8 @@ def pdftohtml():
                 if os.path.exists(UPLOAD_FOLDER):
                 #     # Delete the uploads folder
                     shutil.rmtree(UPLOAD_FOLDER)
-                # else:
-                print("Upload Folder does not exist")
+                else:
+                    print("Upload Folder does not exist")
                 # Format the current time as a string (e.g., "20240324190456")
                 # folder_name = datetime.now().strftime("%Y%m%d%H%M%S")
                 new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], "")
