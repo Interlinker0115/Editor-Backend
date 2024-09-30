@@ -146,11 +146,11 @@ def documentCheck():
     # try:
     data = request.get_json()
     print(data,"----data")
-    base_naem = os.path.basename(data)
-    directory = os.path.dirname(data).split(os.sep)[-1]
-    relevant_path = os.path.join(directory, base_naem)
-    file_path = os.path.join("uploads", relevant_path)
-    with open(file_path, "r", encoding="utf-8") as file:
+    # base_naem = os.path.basename(data)
+    # directory = os.path.dirname(data).split(os.sep)[-1]
+    # relevant_path = os.path.join(directory, base_naem)
+    # file_path = os.path.join("uploads", relevant_path)
+    with open(data, "r", encoding="utf-8") as file:
         html_content = file.read()
     print(html_content, "----->html content")
     print(type(html_content))
