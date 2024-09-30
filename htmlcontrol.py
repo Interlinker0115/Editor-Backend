@@ -355,29 +355,29 @@ def html_control(html_path):
     # Serializing back to HTML string
     modifiedHtmlString = str(soup)
 
-    try:
-        # Step 1: Replace 'Cuadro' with 'Tabla' and 'Imagen' with 'Figura'
-        for text_node in soup.find_all(text=True):
-            if 'Cuadro' in text_node or 'Imagen' in text_node:
-                updated_text = text_node.replace('Cuadro', 'Tabla').replace('Imagen', 'Figura')
-                text_node.replace_with(updated_text)
+    # try:
+    #     # Step 1: Replace 'Cuadro' with 'Tabla' and 'Imagen' with 'Figura'
+    #     for text_node in soup.find_all(text=True):
+    #         if 'Cuadro' in text_node or 'Imagen' in text_node:
+    #             updated_text = text_node.replace('Cuadro', 'Tabla').replace('Imagen', 'Figura')
+    #             text_node.replace_with(updated_text)
 
-        # Function to wrap references in bold tags
-        def wrap_references_in_bold(text):
-            # Regular expression to find "Tabla" or "Figura" followed by a number
-            pattern = re.compile(r'(Tabla|Figura) \d+')
-            # Replace matches with bold tags
-            return pattern.sub(lambda match: f'<b>{match.group(0)}</b>', text)
+    #     # Function to wrap references in bold tags
+    #     def wrap_references_in_bold(text):
+    #         # Regular expression to find "Tabla" or "Figura" followed by a number
+    #         pattern = re.compile(r'(Tabla|Figura) \d+')
+    #         # Replace matches with bold tags
+    #         return pattern.sub(lambda match: f'<b>{match.group(0)}</b>', text)
 
-        # Step 2: Iterate through all text nodes again to wrap references in bold
-        # for text_node in soup.find_all(text=True):
-        #     updated_text = wrap_references_in_bold(text_node)
-        #     # Replace the text node with the new HTML content
-        #     new_soup = BeautifulSoup(updated_text, 'html.parser')
-        #     text_node.replace_with(new_soup)
-    except Exception as e:
-        print('yes')
-        print(e)
+    #     # Step 2: Iterate through all text nodes again to wrap references in bold
+    #     for text_node in soup.find_all(text=True):
+    #         updated_text = wrap_references_in_bold(text_node)
+    #         # Replace the text node with the new HTML content
+    #         new_soup = BeautifulSoup(updated_text, 'html.parser')
+    #         text_node.replace_with(new_soup)
+    # except Exception as e:
+    #     print('yes')
+    #     print(e)
 
     with open(html_path.replace('.html', '.convert.html'), 'w', encoding='UTF-8') as file:
         file.write(modifiedHtmlString)
