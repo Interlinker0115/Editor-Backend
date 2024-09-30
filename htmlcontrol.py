@@ -370,11 +370,11 @@ def html_control(html_path):
             return pattern.sub(lambda match: f'<b>{match.group(0)}</b>', text)
 
         # Step 2: Iterate through all text nodes again to wrap references in bold
-        for text_node in soup.find_all(text=True):
-            updated_text = wrap_references_in_bold(text_node)
-            # Replace the text node with the new HTML content
-            new_soup = BeautifulSoup(updated_text, 'html.parser')
-            text_node.replace_with(new_soup)
+        # for text_node in soup.find_all(text=True):
+        #     updated_text = wrap_references_in_bold(text_node)
+        #     # Replace the text node with the new HTML content
+        #     new_soup = BeautifulSoup(updated_text, 'html.parser')
+        #     text_node.replace_with(new_soup)
     except Exception as e:
         print('yes')
         print(e)
