@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect, send_file
+from flask import Flask, request, jsonify, redirect, send_file, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
@@ -8,13 +8,15 @@ from datetime import datetime
 
 from pdfdomd import doc_to_pdf, pdf_to_html
 from htmlcontrol import html_control
-from web_driver import creat_driver
+# from web_driver import creat_driver
 
 # from langchain_community.chat_models import ChatOpenAI
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
+import uuid
+from pathlib import Path
 
 
 config = load_dotenv(override=True)
@@ -60,16 +62,16 @@ document_chain = document_prompt | model | document_parser
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={"/*": {"origins": "http://localhost:3000"}})
 
 @app.route('/')
 def index():
     return '<h1 style="text-align: center">Welcome to Adlyceum</h1>'
 # Directory where uploaded files will be stored
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-driver = creat_driver()
+# driver = creat_driver()
 
 @app.route('/filetohtml', methods = ['POST'])
 def pdftohtml():
@@ -86,16 +88,17 @@ def pdftohtml():
             if file:
                 # Check if the folder exists before deleting
                 if os.path.exists(UPLOAD_FOLDER):
-                    # Delete the uploads folder
+                #     # Delete the uploads folder
                     shutil.rmtree(UPLOAD_FOLDER)
-                else:
-                    print("Upload Folder does not exist")
+                # else:
+                print("Upload Folder does not exist")
                 # Format the current time as a string (e.g., "20240324190456")
-                folder_name = datetime.now().strftime("%Y%m%d%H%M%S")
-                new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], folder_name)
+                # folder_name = datetime.now().strftime("%Y%m%d%H%M%S")
+                new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], "")
                 # Create the directory (including any necessary intermediate directories)
                 os.makedirs(new_dir_path, exist_ok=True)
-                filename = secure_filename(file.filename)
+                # filename = secure_filename(file.filename)
+                filename = str(uuid.uuid4()) + ".docx"
                 print('filename-->', filename)
                 pdf_path = os.path.join(new_dir_path, filename)
                 file.save(pdf_path)
@@ -113,25 +116,45 @@ def pdftohtml():
                 # return "File converted to HTML successfully!"
                     
                 #convert pdf file to html file(.html)
-                html_path = pdf_to_html(pdf_path, driver)
+                html_path = pdf_to_html(pdf_path)
                 #convert loaded html file to well structured html file and add a style to html file
                 converted_html_path = pdf_path.replace(".pdf", ".html")
                 print(converted_html_path,"-------->")
                 output = html_control(html_path)
                 print(output,"----->output")
+               
+                # base_name = os.path.basename(output)
+                # # directory = os.path.dirname(output).split(os.sep)[-1]
+                # file_path = os.path.splitext(base_name)[0]
+                # print(file_path, "--->file_path")
+                
                 #  send final converted html file to frontend
-                return send_file(output, as_attachment=True)
+                # return send_file(output, as_attachment=True)
+                return output
     except:
         return('server error')
     
+@app.route('/iframehtml', methods = ['GET'])
+def iframeRender():
+    link = request.args.get('link')
+    print(link, "--->link")
+    return send_file(link, as_attachment=True )
+
 @app.route('/documentCheck', methods = ["POST"])
 def documentCheck():
     # try:
     data = request.get_json()
-    # print(data,"----data")
-    # print(type(data))
+    print(data,"----data")
+    base_naem = os.path.basename(data)
+    directory = os.path.dirname(data).split(os.sep)[-1]
+    relevant_path = os.path.join(directory, base_naem)
+    file_path = os.path.join("uploads", relevant_path)
+    with open(file_path, "r", encoding="utf-8") as file:
+        html_content = file.read()
+    print(html_content, "----->html content")
+    print(type(html_content))
     # content = data.get("content")
-    result = document_chain.invoke({"content": data})
+    result = document_chain.invoke({"content": html_content})
     # print(result)
     return result
     
@@ -140,8 +163,6 @@ def documentCheck():
     # except Exception as e:
     #     return f"there: {str(e)}"
     
-                     
-
 
 if __name__ == "__main__":
     app.run(debug=True)
