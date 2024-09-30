@@ -144,20 +144,32 @@ def iframeRender():
 @app.route('/documentCheck', methods = ["POST"])
 def documentCheck():
     # try:
-    data = request.get_json()
-    print(data,"----data")
-    # base_naem = os.path.basename(data)
-    # directory = os.path.dirname(data).split(os.sep)[-1]
-    # relevant_path = os.path.join(directory, base_naem)
-    # file_path = os.path.join("uploads", relevant_path)
-    with open(data, "r", encoding="utf-8") as file:
-        html_content = file.read()
-    print(html_content, "----->html content")
-    print(type(html_content))
-    # content = data.get("content")
-    result = document_chain.invoke({"content": html_content})
-    # print(result)
-    return result
+    # data = request.get_json()
+    # print(data,"----data")
+    # # base_naem = os.path.basename(data)
+    # # directory = os.path.dirname(data).split(os.sep)[-1]
+    # # relevant_path = os.path.join(directory, base_naem)
+    # # file_path = os.path.join("uploads", relevant_path)
+    # with open(data, "r", encoding="utf-8") as file:
+    #     html_content = file.read()
+    # print(html_content, "----->html content")
+    # print(type(html_content))
+    # # content = data.get("content")
+    # result = document_chain.invoke({"content": html_content})
+    # # print(result)
+    # return result
+
+    try:
+            data = request.get_json()
+            content = data.get("content")
+            result = document_chain.invoke({"content": content})
+            print(result)
+            return result 
+        
+    except KeyError as e:
+        return f"KeyError: {str(e)}"
+    except Exception as e:
+        return f"there: {str(e)}"
     
     # except KeyError as e:
     #     return f"KeyError: {str(e)}"
