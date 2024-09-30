@@ -154,8 +154,8 @@ def documentCheck():
         html_content = file.read()
     print(html_content, "----->html content")
     print(type(html_content))
-    # content = data.get("content")
-    result = document_chain.invoke({"content": html_content})
+    content = data.get("content")
+    result = document_chain.invoke({"content": content})
     # print(result)
     return result
     
