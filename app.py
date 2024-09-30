@@ -62,7 +62,8 @@ document_chain = document_prompt | model | document_parser
 
 
 app = Flask(__name__)
-CORS(app, resources={"/*": {"origins": "*"}})
+CORS(app)
+# CORS(app, resources={"/*": {"origins": "*"}})
 
 @app.route('/')
 def index():
