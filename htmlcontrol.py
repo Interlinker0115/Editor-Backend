@@ -35,51 +35,52 @@ def html_control(html_path):
 
         ## Replace formula to editable mathml formula
         # read .formula.csv file and then make mathml formula list
-        # mathmls = []
-        # mathml_path = html_path.replace('.html', '.formula.csv')
+        mathmls = []   #option:can delete
+        mathml_path = html_path.replace('.html', '.formula.csv')
 
-        # with open(mathml_path, newline='', encoding='utf-8') as file:
-        #     csv_reader = csv.reader(file)
-        #     for row in csv_reader:
-        #         cleaned_mathml = row[0].replace('block', '')
-        #         mathmls.append(cleaned_mathml)
+        with open(mathml_path, newline='', encoding='utf-8') as file:
+            csv_reader = csv.reader(file)
+            for row in csv_reader:
+                cleaned_mathml = row[0].replace('block', '')
+                mathmls.append(cleaned_mathml)  #until here
 
-        # # Find all <span> elements with class "math-block"
-        # # math_block_spans = soup.find_all('span', class_='math-block')
-        # try:
-        #     math_block_spans = soup.find_all(
-        #         lambda tag: tag.name == 'span' and ('math-block' in tag.get('class', []) or 'math-inline' in tag.get('class', []))
-        #     )
-        #     # Extract <svg> elements within the math-block spans
-        #     math_index = 0
-        #     for span in math_block_spans:
-        #         svg_elements = span.find_all('svg')
-        #         for svg in svg_elements:
-        #             # Parse the MathML string into a BeautifulSoup object
-        #             mathml_soup = BeautifulSoup(mathmls[math_index], 'html.parser')
-        #             svg.replace_with(mathml_soup)
-        #             math_index += 1
-        # except Exception as e:
-        #     print('you are right')
-        #     print(e)
+        # Find all <span> elements with class "math-block"
+        # math_block_spans = soup.find_all('span', class_='math-block')
+        try:
+            math_block_spans = soup.find_all(
+                lambda tag: tag.name == 'span' and ('math-block' in tag.get('class', []) or 'math-inline' in tag.get('class', []))
+            )
+            # Extract <svg> elements within the math-block spans
+            math_index = 0
+            for span in math_block_spans:
+                svg_elements = span.find_all('svg')
+                for svg in svg_elements:
+                    # Parse the MathML string into a BeautifulSoup object
+                    mathml_soup = BeautifulSoup(mathmls[math_index], 'html.parser')
+                    svg.replace_with(mathml_soup)
+                    math_index += 1
+        except Exception as e:
+            print('you are right')
+            print(e)
                 
-        # ## svg font control according to the position
-        # # Find all <span> tags with class is "math-inline"
-        # math_inline_spans = soup.find_all('span', class_='math-inline')
-        # for span in math_inline_spans:
-        #     span_parent = span.parent
-        #     if span_parent.name == 'th':
-        #         all_svg = span.find_all('svg')
-        #         for svg in all_svg:
-        #             svg['style'] = 'color: white; font-size: 12px;'
-        #     elif span_parent.name == 'td':
-        #         all_svg = span.find_all('svg')
-        #         for svg in all_svg:
-        #             svg['style'] = 'font-size: 12px'
-        #     else :
-        #         all_svg = span.find_all('svg')
-        #         for svg in all_svg:
-        #             svg['style'] = 'font-size: 15px'
+        ## svg font control according to the position
+        # Find all <span> tags with class is "math-inline"
+        math_inline_spans = soup.find_all('span', class_='math-inline')
+        for span in math_inline_spans:
+            span_parent = span.parent
+            if span_parent.name == 'th':
+                all_svg = span.find_all('svg')
+                for svg in all_svg:
+                    svg['style'] = 'color: white; font-size: 12px;'
+            elif span_parent.name == 'td':
+                all_svg = span.find_all('svg')
+                for svg in all_svg:
+                    svg['style'] = 'font-size: 12px'
+            else :
+                all_svg = span.find_all('svg')
+                for svg in all_svg:
+                    svg['style'] = 'font-size: 15px'     #until here
+
 
 
         #First Resumen exception handling and bold of Palabras clave:
@@ -177,7 +178,6 @@ def html_control(html_path):
         # Make the section tag
         h2_tags = soup.find_all('h2')
         sections = []
-        # n = 0
         for h2_tag in h2_tags:
             # Create section tag
             section = soup.new_tag('section')

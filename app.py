@@ -72,68 +72,61 @@ def index():
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# driver = creat_driver()
+
+driver = creat_driver() # option:can delete
 
 @app.route('/filetohtml', methods = ['POST'])
 def pdftohtml():
-    # try:
-    if request.method == 'POST':
-        # Check if the post request has the file part
-        if 'file' not in request.files:
-            return "there is no file"
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            return redirect(request.url)
-        if file:
-            # Check if the folder exists before deleting
-            if os.path.exists(UPLOAD_FOLDER):
-            #     # Delete the uploads folder
-                shutil.rmtree(UPLOAD_FOLDER)
-            else:
-                print("Upload Folder does not exist")
-            # Format the current time as a string (e.g., "20240324190456")
-            # folder_name = datetime.now().strftime("%Y%m%d%H%M%S")
-            new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], "")
-            # Create the directory (including any necessary intermediate directories)
-            os.makedirs(new_dir_path, exist_ok=True)
-            filename = secure_filename(file.filename)
-            # filename = str(uuid.uuid4()) + ".docx"
-            print('filename-->', filename)
-            pdf_path = os.path.join(new_dir_path, filename)
-            file.save(pdf_path)
-            
-            file_type = filename.split(".")[-1]
-            # if file_type == "html":
-            #     pdf_path = htmltopdf(pdf_path)
-            
-            if file_type != "pdf":
-                try:
-                    #if document is doc, docx or rft, convert this document to pdf file
-                    pdf_path = doc_to_pdf(pdf_path)
-                except: return "Invalid type of file"
+    try:
+        if request.method == 'POST':
+            # Check if the post request has the file part
+            if 'file' not in request.files:
+                return "there is no file"
+            file = request.files['file']
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            if file.filename == '':
+                return redirect(request.url)
+            if file:
+                # Check if the folder exists before deleting
+                if os.path.exists(UPLOAD_FOLDER):
+                #     # Delete the uploads folder
+                    shutil.rmtree(UPLOAD_FOLDER)
+                else:
+                    print("Upload Folder does not exist")
+                # Format the current time as a string (e.g., "20240324190456")
+                # folder_name = datetime.now().strftime("%Y%m%d%H%M%S")
+                new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], "")
+                # Create the directory (including any necessary intermediate directories)
+                os.makedirs(new_dir_path, exist_ok=True)
+                filename = secure_filename(file.filename)
+                # filename = str(uuid.uuid4()) + ".docx"
+                print('filename-->', filename)
+                pdf_path = os.path.join(new_dir_path, filename)
+                file.save(pdf_path)
                 
-            # return "File converted to HTML successfully!"
+                file_type = filename.split(".")[-1]
+                # if file_type == "html":
+                #     pdf_path = htmltopdf(pdf_path)
                 
-            #convert pdf file to html file(.html)
-            html_path = pdf_to_html(pdf_path)
-            #convert loaded html file to well structured html file and add a style to html file
-            converted_html_path = pdf_path.replace(".pdf", ".html")
-            print(converted_html_path,"-------->")
-            output = html_control(html_path)
-            print(output,"----->output")
-            
-            # base_name = os.path.basename(output)
-            # # directory = os.path.dirname(output).split(os.sep)[-1]
-            # file_path = os.path.splitext(base_name)[0]
-            # print(file_path, "--->file_path")
-            
-            #  send final converted html file to frontend
-            # return send_file(output, as_attachment=True)
-            return output
-    # except:
-    #     return('server error')
+                if file_type != "pdf":
+                    try:
+                        #if document is doc, docx or rft, convert this document to pdf file
+                        pdf_path = doc_to_pdf(pdf_path)
+                    except: return "Invalid type of file"
+                    
+                # return "File converted to HTML successfully!"
+                    
+                #convert pdf file to html file(.html)
+                html_path = pdf_to_html(pdf_path, driver)    #option:can delete
+                #convert loaded html file to well structured html file and add a style to html file
+                converted_html_path = pdf_path.replace(".pdf", ".html")
+                print(converted_html_path,"-------->")
+                output = html_control(html_path)
+                print(output,"----->output")
+                return output
+    except:
+        return('server error')
     
 @app.route('/iframehtml', methods = ['GET'])
 def iframeRender():

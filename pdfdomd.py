@@ -104,7 +104,7 @@ def download_processed_file(file_id, file_format, output_path, puporse='pdf'):
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
     
-def pdf_to_html(input_pdf_path, file_type='md'):
+def pdf_to_html(input_pdf_path, driver, file_type='md'):  #option:can delete
     print('start pdf convert')
     # path of the converted markdown file
     output_mmd_path = input_pdf_path.replace('.pdf', f'.{file_type}')
@@ -117,7 +117,7 @@ def pdf_to_html(input_pdf_path, file_type='md'):
             download_processed_file(pdf_id, 'md', output_mmd_path)
     
     # extract the formula from md file, convert this latex formula to mathml formula and then save this mathml file to csv file
-    # formula_handling(output_mmd_path, driver)
+    formula_handling(output_mmd_path, driver)
     
     # convert md file to html file and
     # send request for conversion of md file
