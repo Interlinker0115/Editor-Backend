@@ -47,7 +47,7 @@ document_prompt = PromptTemplate(
     you should allow some minor errors.
     you must ignore all math related errors and html tag related erros.
     you must ignore this error: 'The paragraph is incomplete and ends abruptly.'
-    reasons must be spanish.
+    reasons must be english.
     This is example outputs:
     "isTrue": "true", "tags": [], "reasons": [],
     "isTrue": "false", "tags": ["example text content of the tag"], "reasons": ["your reason"]
