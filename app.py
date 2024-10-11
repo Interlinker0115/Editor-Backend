@@ -123,9 +123,9 @@ def pdftohtml():
                 #convert loaded html file to well structured html file and add a style to html file
                 converted_html_path = pdf_path.replace(".pdf", ".html")
                 print(converted_html_path,"-------->")
-                output = html_control(html_path)
-                print(output,"----->output")
-                return output
+                # output = html_control(html_path)
+                # print(output,"----->output")
+                return converted_html_path
     except:
         return('server error')
     
