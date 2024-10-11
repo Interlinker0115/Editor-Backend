@@ -98,8 +98,8 @@ def pdftohtml():
             new_dir_path = os.path.join(app.config['UPLOAD_FOLDER'], "")
             # Create the directory (including any necessary intermediate directories)
             os.makedirs(new_dir_path, exist_ok=True)
-            # filename = secure_filename(file.filename)
-            filename = str(uuid.uuid4()) + ".docx"
+            filename = secure_filename(file.filename)
+            # filename = str(uuid.uuid4()) + ".docx"
             print('filename-->', filename)
             pdf_path = os.path.join(new_dir_path, filename)
             file.save(pdf_path)
