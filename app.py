@@ -8,7 +8,8 @@ from datetime import datetime
 
 from pdfdomd import doc_to_pdf, pdf_to_html
 from htmlcontrol import html_control
-from web_driver import creat_driver
+
+# from web_driver import creat_driver
 
 # from langchain_community.chat_models import ChatOpenAI
 from langchain_openai import ChatOpenAI
@@ -73,7 +74,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-driver = creat_driver() # option:can delete
+# driver = creat_driver() # option:can delete
 
 @app.route('/filetohtml', methods = ['POST'])
 def pdftohtml():
@@ -118,7 +119,7 @@ def pdftohtml():
                 # return "File converted to HTML successfully!"
                     
                 #convert pdf file to html file(.html)
-                html_path = pdf_to_html(pdf_path, driver)    #option:can delete
+                html_path = pdf_to_html(pdf_path)    #option:can delete
                 #convert loaded html file to well structured html file and add a style to html file
                 converted_html_path = pdf_path.replace(".pdf", ".html")
                 print(converted_html_path,"-------->")
