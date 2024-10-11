@@ -23,15 +23,6 @@ from pathlib import Path
 config = load_dotenv(override=True)
 
 model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-
-class DocumentSuggestions(BaseModel):
-    isTrue: str = Field(description="If all paragraph is good, true, if not, false")
-    tags: str = Field(description="the list of text content string of the identified origin tags")
-    reasons: str = Field(description="reason list according to the identified tags")
-
-# Initialize the JSON output parser
-document_parser = JsonOutputParser(pydantic_object=DocumentSuggestions)
-
 class DocumentSuggestions(BaseModel):
     isTrue: str = Field(description="If all paragraph is good, true, if not, false")
     tags: str = Field(description="the list of text content string of the identified origin tags")
