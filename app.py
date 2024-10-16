@@ -32,7 +32,7 @@ document_parser = JsonOutputParser(pydantic_object=DocumentSuggestions)
 
 document_prompt = PromptTemplate(
     template="""
-    As a document checker, your task is to identify all unfinished, grammatical errors, outdated legal terms or coherence lack paragraphs from the document. 
+    As a document checker, your task is to identify all unfinished, grammatical errors, outdated legal terms from the document. 
     You should focus on checking paragraphs enclosed within <div> tags, while ignoring any table, image, or math related tags present in the document.
     Please identify the unfinished or  seriously logic incomplete paragraphs(tags) and make the reason of this.
     you should allow some minor errors.
