@@ -1,0 +1,9 @@
+davidharryporter@gmail.com
+ngrok config add-authtoken 2cItUs4DFeuNYQXLxl557GyGn7R_2t95jpxSq469uqbaNKZyS
+ngrok http --url=wise-top-labrador.ngrok-free.app 5000
+
+interlinker422031@gmail.com
+ngrok config add-authtoken 2mCvDS2xpbcxykCCqOxHhcwgL1G_5cqftCt4jjyBaQVYuft2p
+ngrok http --url=osprey-heroic-eagle.ngrok-free.app 5000
+
+https://osprey-heroic-eagle.ngrok-free.app
